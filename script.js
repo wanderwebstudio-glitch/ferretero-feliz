@@ -11,46 +11,37 @@ mobileMenuBtn.addEventListener('click', () => {
 });
 
         
-        // Formulario de contacto
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Obtener valores del formulario
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const message = document.getElementById('message').value;
-            
-            // Aquí normalmente se enviarían los datos a un servidor
-            // Por ahora solo mostraremos una alerta
-            alert(`¡Gracias ${name}! Hemos recibido tu mensaje. Te contactaremos en ${email} en breve.`);
-            
-            // Limpiar formulario
-            document.getElementById('contactForm').reset();
-        });
-        
-        // Smooth scrolling para enlaces internos
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                const targetId = this.getAttribute('href');
-                if (targetId === '#') return;
-                
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 80,
-                        behavior: 'smooth'
-                    });
-                    
-                    // Cerrar menú móvil si está abierto
-                    const mobileMenu = document.getElementById('mobileMenu');
-                    if (mobileMenu.classList.contains('active')) {
-                        mobileMenu.classList.remove('active');
-                        const menuBtnIcon = document.querySelector('#mobileMenuBtn i');
-                        menuBtnIcon.classList.remove('fa-times');
-                        menuBtnIcon.classList.add('fa-bars');
-                    }
-                }
-            });
-        });
+
+const form = document.getElementById("contactForm");
+const statusMessage = document.getElementById("statusMessage");
+
+form.addEventListener("submit", function (e) {
+  e.preventDefault();
+
+  const name = document.getElementById("name").value;
+  const phone = document.getElementById("phone").value;
+  const product = document.getElementById("product").value;
+  const quantity = document.getElementById("quantity").value;
+  const message = document.getElementById("message").value;
+
+  const texto = `
+🧱 Pedido desde la web
+
+👤 Nombre: ${name}
+📞 Teléfono: ${phone}
+🔧 Producto: ${product}
+📦 Cantidad: ${quantity}
+📝 Nota: ${message || "Ninguna"}
+  `;
+
+  const whatsappURL = `https://wa.me/18295731646?text=${encodeURIComponent(texto)}`;
+
+  window.open(whatsappURL, "_blank");
+
+  form.reset();
+  statusMessage.style.display = "block";
+
+  setTimeout(() => {
+    statusMessage.style.display = "none";
+  }, 5000);
+});
